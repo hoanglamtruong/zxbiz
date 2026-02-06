@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ZxBiz F1.0 - Personal Edition</title>
+    <title>ZxBiz F1.0 - Personal Edition (Patched)</title>
     <link rel="manifest" href="manifest.json">
     <meta name="theme-color" content="#2C263F">
     
@@ -357,7 +357,24 @@
                     this.newMissionTitle = '';
                 },
                 async updateMission(mission) { const { id, ...data } = mission; await updateDoc(doc(db, "missions", id), data); },
-                async deleteMission(id) { if(confirm('Xóa Mission này và toàn bộ công việc bên trong? Hành động này không thể hoàn tác.')) await deleteDoc(doc(db, "missions", id)); },
+                
+                // --- PATCH: XỬ LÝ LỖI XÓA MISSION ---
+                async deleteMission(id) {
+                    if (!id) return;
+                    if (!confirm('⚠️ CẢNH BÁO: Bạn có chắc muốn xóa Mission này và toàn bộ dữ liệu bên trong? Hành động này KHÔNG thể phục hồi.')) return;
+                    
+                    try {
+                        this.showToast("Đang xóa dữ liệu...", '<i class="fas fa-spinner fa-spin"></i>', "Đang xử lý");
+                        await deleteDoc(doc(db, "missions", id));
+                        this.showToast("Đã xóa thành công!", '<i class="fas fa-trash-alt"></i>', "Hoàn tất");
+                        this.triggerConfetti(0.5, 'regular');
+                    } catch (error) {
+                        console.error("Lỗi xóa Mission:", error);
+                        alert("❌ Lỗi: Không thể xóa Mission!\n\nChi tiết: " + error.message + "\n\n(Vui lòng kiểm tra tab Rules trên Firebase Console)");
+                    }
+                },
+                // --- END PATCH ---
+
                 async editMissionTitle(mission) { const t = prompt("Tên mới:", mission.title); if(t) { mission.title = t; await this.updateMission(mission); } },
                 async editTasklistTitle(mission, tlIndex) { const t = prompt("Tên nhóm mới:", mission.tasklists[tlIndex].title); if(t) { mission.tasklists[tlIndex].title = t; await this.updateMission(mission); } },
                 openQuickAddModal() { if (!this.quickInput.trim()) return; let defaultMissionId = ''; if (this.normalMissions.length > 0) defaultMissionId = this.normalMissions[0].id; this.quickAddForm = { content: this.quickInput, missionId: defaultMissionId, tasklistId: '' }; this.updateTasklistSelection(); this.showQuickAddModal = true; },
