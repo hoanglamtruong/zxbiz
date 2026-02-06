@@ -3,49 +3,42 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ZxBiz F1.0 - Personal Edition (Patched)</title>
+    <title>ZxBiz F1.0 - Freelancer Pro</title>
     <link rel="manifest" href="manifest.json">
-    <meta name="theme-color" content="#2C263F">
+    <meta name="theme-color" content="#1D3E53">
     
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     
     <style>
-        /* BẢNG MÀU CHÍNH XÁC TỪ ẢNH CUNG CẤP */
-        :root {
-            --primary: #2C263F;    /* DARK PURPLE */
-            --secondary: #595082;  /* ULTRA VIOLET */
-            --accent: #F8C662;     /* SAFFRON */
-            --success: #41644A;    /* HUNTER GREEN */
-            --bg-light: #EAE7F0;   
-        }
-        body { background-color: var(--primary); color: var(--bg-light); -webkit-tap-highlight-color: transparent; }
+        /* Tông màu ZxBiz: Navy (Chuyên nghiệp) & Gold (Tiền bạc) */
+        :root { --primary: #1D3E53; --secondary: #77A6B6; --accent: #E49B45; --bg: #EAF4F4; }
+        body { background-color: var(--bg); color: var(--primary); -webkit-tap-highlight-color: transparent; }
         
         .no-scrollbar::-webkit-scrollbar { display: none; }
         .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
-        .loader { border: 3px solid var(--bg-light); border-top: 3px solid var(--accent); border-radius: 50%; width: 30px; height: 30px; animation: spin 1s linear infinite; }
+        .loader { border: 3px solid #fff; border-top: 3px solid var(--accent); border-radius: 50%; width: 30px; height: 30px; animation: spin 1s linear infinite; }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
         [v-cloak] { display: none !important; }
 
-        #app { background-color: var(--primary) !important; color: var(--bg-light); }
-
         .board-container { display: flex; gap: 0.8rem; overflow-x: auto; scroll-snap-type: x mandatory; padding-bottom: 0.5rem; scroll-behavior: smooth; }
-        .mission-card { min-width: 85vw; max-width: 85vw; scroll-snap-align: center; display: flex; flex-direction: column; max-height: 65vh; border-radius: 1rem; overflow: hidden; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.2); background-color: var(--bg-light); color: var(--primary); }
+        .mission-card { min-width: 85vw; max-width: 85vw; scroll-snap-align: center; display: flex; flex-direction: column; max-height: 65vh; border-radius: 1rem; overflow: hidden; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); }
         @media (min-width: 768px) { .mission-card { min-width: 320px; max-width: 320px; } }
         .mission-body { overflow-y: auto; flex: 1; padding: 0.5rem; }
 
-        .theme-idea { border: 2px solid var(--accent); background-color: #FFF8E1; color: var(--primary); }
-        .theme-normal .header { background-color: var(--secondary); color: white; }
-        .theme-normal .body { background-color: var(--bg-light); }
+        /* Themes Biz */
+        .theme-idea { border: 2px solid #E49B45; background-color: #FFF8E1; }
+        .theme-normal .header { background-color: #1D3E53; color: white; }
+        .theme-normal .body { background-color: #EAF4F4; }
         .idea-focus-container { max-height: 80px; overflow-y: auto; }
 
-        /* STATUS STYLES */
-        .card-done { border-left: 4px solid var(--secondary); opacity: 0.7; background-color: #F3F0FF; }
-        .card-cancel { border-left: 4px solid #9CA3AF; text-decoration: line-through; opacity: 0.6; }
+        /* STATUS STYLES (Focus vào trạng thái tiền/nợ) */
+        .card-done { border-left: 4px solid #1D3E53; opacity: 0.6; background-color: #F0F9F9; }
+        .card-cancel { border-left: 4px solid #9CA3AF; text-decoration: line-through; opacity: 0.5; }
         .card-loop { border-left: 4px solid #8B5CF6; background-color: #F5F3FF; }
-        .card-debt { border-left: 4px solid #EF4444; background-color: #FEF2F2; border-right: 1px solid #EF4444; }
-        .card-doing { border-left: 4px solid var(--accent); }
+        .card-debt { border-left: 4px solid #EF4444; background-color: #FEF2F2; border-right: 1px solid #EF4444; } /* Khách nợ */
+        .card-doing { border-left: 4px solid #77A6B6; }
 
         .toast-enter-active, .toast-leave-active { transition: all 0.5s ease; }
         .toast-enter-from, .toast-leave-to { opacity: 0; transform: translateY(-20px); }
@@ -53,117 +46,113 @@
 </head>
 <body>
     
-    <div id="app" v-cloak class="max-w-md mx-auto min-h-screen shadow-2xl flex flex-col relative transition-all duration-300 pb-20">
+    <div id="app" v-cloak class="max-w-md mx-auto min-h-screen shadow-2xl flex flex-col relative transition-all duration-300 pb-20 bg-[#EAF4F4]">
         
         <transition name="toast">
-            <div v-if="toast.show" class="fixed top-20 left-1/2 transform -translate-x-1/2 z-[150] bg-secondary text-white px-6 py-4 rounded-xl shadow-2xl flex items-center border-2 border-accent min-w-[300px]">
+            <div v-if="toast.show" class="fixed top-20 left-1/2 transform -translate-x-1/2 z-[150] bg-[#1D3E53] text-white px-6 py-4 rounded-xl shadow-2xl flex items-center border-2 border-[#E49B45] min-w-[300px]">
                 <div class="mr-3 text-2xl" v-html="toast.icon"></div>
-                <div><div class="font-bold text-sm text-accent uppercase mb-1">{{ toast.title }}</div><div class="font-medium text-sm">{{ toast.message }}</div></div>
+                <div><div class="font-bold text-sm text-[#E49B45] uppercase mb-1">{{ toast.title }}</div><div class="font-medium text-sm">{{ toast.message }}</div></div>
             </div>
         </transition>
 
-        <div class="bg-secondary text-white p-4 sticky top-0 z-50 shadow-lg flex justify-between items-center">
+        <div class="bg-[#1D3E53] text-white p-4 sticky top-0 z-50 shadow-lg flex justify-between items-center">
             <h1 class="font-bold text-lg flex items-center cursor-pointer" @click="scrollToTop">
-                <i class="fas fa-rocket mr-2 text-accent"></i>ZxBiz 
+                <i class="fas fa-rocket mr-2"></i>ZxBiz 
                 <span v-if="isPlus" class="bg-gradient-to-r from-purple-500 to-pink-500 text-[10px] px-1.5 py-0.5 rounded ml-1 font-bold">PLUS</span>
-                <span v-else class="bg-accent text-primary text-[10px] px-1.5 py-0.5 rounded ml-1 font-bold">FREE</span>
+                <span v-else class="bg-[#E49B45] text-black text-[10px] px-1.5 py-0.5 rounded ml-1 font-bold">FREE</span>
             </h1>
-            <div class="relative flex items-center">
-                <button @click="showMenu = !showMenu" class="p-2 hover:bg-primary/30 rounded-full transition"><i class="fas fa-ellipsis-v"></i></button>
-                
-                <div v-if="showMenu" class="absolute right-0 top-12 bg-white text-primary shadow-xl rounded-xl w-72 py-2 border border-gray-200 z-50 animate-fade-in origin-top-right">
-                    <button @click="togglePlus" class="block w-full text-left px-4 py-2.5 hover:bg-accent/10 font-bold transition" :class="isPlus ? 'text-gray-500' : 'text-purple-600'">
-                        <i class="fas mr-2 w-6 text-center" :class="isPlus ? 'fa-toggle-off' : 'fa-crown'"></i> {{ isPlus ? 'Giao diện gọn (3 Tab)' : 'Mở rộng Studio (5 Tab)' }}
+            <div class="relative">
+                <button @click="showMenu = !showMenu" class="p-2 hover:bg-[#77A6B6] rounded transition"><i class="fas fa-ellipsis-v"></i></button>
+                <div v-if="showMenu" class="absolute right-0 top-10 bg-white text-[#1D3E53] shadow-xl rounded w-56 py-2 border z-50">
+                    <button @click="togglePlus" class="block w-full text-left px-4 py-2 hover:bg-[#BEE9E4]/30 font-bold" :class="isPlus ? 'text-gray-500' : 'text-purple-600'">
+                        <i class="fas" :class="isPlus ? 'fa-toggle-off' : 'fa-crown'"></i> {{ isPlus ? 'Về giao diện gọn (3 Tab)' : 'Mở rộng Studio (5 Tab)' }}
                     </button>
-                    <button @click="resetBlocks" class="block w-full text-left px-4 py-2.5 hover:bg-red-50 text-red-500 transition"><i class="fas fa-undo mr-2 w-6 text-center"></i>Reset Cấu trúc</button>
-                    <button @click="exportData" class="block w-full text-left px-4 py-2.5 hover:bg-accent/10 transition"><i class="fas fa-file-code mr-2 w-6 text-center"></i>Backup dữ liệu (JSON)</button>
-                    <label class="block w-full text-left px-4 py-2.5 hover:bg-accent/10 cursor-pointer transition"><i class="fas fa-file-import mr-2 w-6 text-center"></i>Khôi phục dữ liệu<input type="file" @change="importData" class="hidden" accept=".json"></label>
+                    <button @click="resetBlocks" class="block w-full text-left px-4 py-2 hover:bg-[#BEE9E4]/30 text-red-500"><i class="fas fa-undo mr-2"></i>Reset Cấu trúc</button>
+                    <button @click="exportData('json')" class="block w-full text-left px-4 py-2 hover:bg-[#BEE9E4]/30"><i class="fas fa-file-code mr-2"></i>Backup JSON</button>
+                    <label class="block w-full text-left px-4 py-2 hover:bg-[#BEE9E4]/30 cursor-pointer"><i class="fas fa-file-import mr-2"></i>Import File<input type="file" @change="importData" class="hidden" accept=".json"></label>
                 </div>
             </div>
         </div>
         <div v-if="showMenu" @click="showMenu = false" class="fixed inset-0 z-40 bg-black bg-opacity-20"></div>
 
-        <div class="p-4 bg-primary border-b border-white/10 shadow-sm space-y-3">
+        <div class="p-4 bg-white border-b shadow-sm space-y-3">
             <div class="relative">
-                <input v-model="quickInput" @keyup.enter="openQuickAddModal" placeholder="Tìm kiếm hoặc thêm nhanh..." class="w-full pl-10 pr-12 py-3 border-2 border-secondary rounded-xl bg-white/10 focus:bg-white focus:text-primary focus:outline-none text-white font-medium shadow-sm transition-all placeholder-white/50">
-                <i class="fas fa-search absolute left-3 top-3.5 text-white/70"></i>
-                <button @click="openQuickAddModal" class="absolute right-2 top-2 bg-accent text-primary p-1.5 px-3 rounded-lg hover:bg-secondary hover:text-white transition"><i class="fas fa-arrow-up"></i></button>
+                <input v-model="quickInput" @keyup.enter="openQuickAddModal" placeholder="Tìm kiếm hoặc thêm nhanh..." class="w-full pl-10 pr-12 py-3 border-2 border-[#1D3E53] rounded-xl bg-[#EAF4F4] focus:bg-white focus:outline-none text-[#1D3E53] font-medium shadow-sm transition-all">
+                <i class="fas fa-search absolute left-3 top-3.5 text-[#1D3E53]"></i>
+                <button @click="openQuickAddModal" class="absolute right-2 top-2 bg-[#1D3E53] text-white p-1.5 px-3 rounded-lg hover:bg-[#77A6B6]"><i class="fas fa-arrow-up"></i></button>
             </div>
             
-            <div @click="showReportModal = true" class="flex gap-4 text-xs font-bold text-white/70 justify-center cursor-pointer hover:bg-white/10 p-2 rounded-lg transition border border-transparent hover:border-white/20">
-                <span class="flex items-center"><i class="fas fa-arrow-down text-accent mr-1"></i> {{ formatMoney(stats.income) }}</span>
-                <span class="flex items-center"><i class="fas fa-arrow-up text-red-400 mr-1"></i> {{ formatMoney(stats.expense) }}</span>
-                <span class="ml-2 text-white opacity-50"><i class="fas fa-chart-pie"></i> Xem báo cáo</span>
+            <div @click="showReportModal = true" class="flex gap-4 text-xs font-bold text-[#1D3E53]/70 justify-center cursor-pointer hover:bg-gray-50 p-2 rounded-lg transition border border-transparent hover:border-gray-200">
+                <span class="flex items-center"><i class="fas fa-arrow-down text-[#77A6B6] mr-1"></i> {{ formatMoney(stats.income) }}</span>
+                <span class="flex items-center"><i class="fas fa-arrow-up text-[#E49B45] mr-1"></i> {{ formatMoney(stats.expense) }}</span>
+                <span class="ml-2 text-[#1D3E53] opacity-50"><i class="fas fa-chart-pie"></i> Xem báo cáo</span>
             </div>
         </div>
 
-        <div class="flex-1 flex flex-col overflow-hidden space-y-4 overflow-y-auto pb-10 bg-primary">
+        <div class="flex-1 flex flex-col bg-[#EAF4F4] overflow-hidden space-y-4 overflow-y-auto pb-10">
             <div v-if="loading" class="text-center py-10"><div class="loader mx-auto mb-2"></div></div>
             <div v-else>
                 
                 <div v-if="ideaMission" class="px-3 mt-3">
-                    <div class="w-full bg-[#FFF8E1] border-2 border-accent rounded-xl shadow-sm overflow-hidden flex flex-col">
-                        <div class="bg-[#FFF3CD] px-3 py-2 flex justify-between items-center border-b border-accent/30">
-                            <span class="text-xs font-bold text-accent uppercase tracking-wider flex items-center"><i class="fas fa-lightbulb mr-1"></i> HỘP Ý TƯỞNG</span>
-                            <span class="text-[10px] text-accent/70 font-bold">{{ ideaMission.tasklists[0]?.todos.length || 0 }} ý tưởng</span>
+                    <div class="w-full bg-[#FFF8E1] border-2 border-[#E49B45] rounded-xl shadow-sm overflow-hidden flex flex-col">
+                        <div class="bg-[#FFF3CD] px-3 py-2 flex justify-between items-center border-b border-[#E49B45]/30">
+                            <span class="text-xs font-bold text-[#E49B45] uppercase tracking-wider flex items-center"><i class="fas fa-lightbulb mr-1"></i> MARKET IDEAS</span>
+                            <span class="text-[10px] text-[#E49B45]/70">{{ ideaMission.tasklists[0]?.todos.length || 0 }} ý tưởng</span>
                         </div>
-                        <div class="p-2 text-primary">
-                            <div class="mb-2 relative"><input @keyup.enter="addIdeaDirectly(ideaMission, $event)" placeholder="💡 Nhập ý tưởng mới..." class="w-full text-sm p-3 pr-10 bg-white border border-accent/30 rounded-lg focus:outline-none focus:ring-2 focus:ring-accent text-primary placeholder-accent/50 shadow-inner font-medium"><button class="absolute right-2 top-2 text-accent hover:text-secondary"><i class="fas fa-plus-circle"></i></button></div>
+                        <div class="p-2">
+                            <div class="mb-2"><input @keyup.enter="addIdeaDirectly(ideaMission, $event)" placeholder="💡 Ý tưởng kiếm tiền mới..." class="w-full text-sm p-2 bg-white border border-[#E49B45]/30 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#E49B45] text-[#1D3E53] placeholder-[#E49B45]/50 shadow-inner"></div>
                             <div class="idea-focus-container space-y-2 pr-1 custom-scrollbar">
                                 <template v-if="ideaMission.tasklists.length > 0 && ideaMission.tasklists[0].todos.length > 0">
-                                    <div v-for="(todo, tIndex) in ideaMission.tasklists[0].todos.slice().reverse()" :key="todo.id" class="p-2 bg-white rounded-lg border border-accent/10 flex justify-between items-center cursor-pointer hover:bg-[#FFF3CD] transition group shadow-sm" @click="openEditModal(ideaMission, 0, (ideaMission.tasklists[0].todos.length - 1 - tIndex), true)">
-                                        <span class="text-sm font-medium text-primary truncate flex-1">{{ todo.content }}</span><i class="fas fa-pen text-[10px] text-accent opacity-0 group-hover:opacity-100 transition"></i>
+                                    <div v-for="(todo, tIndex) in ideaMission.tasklists[0].todos.slice().reverse()" :key="todo.id" class="p-2 bg-white rounded border border-[#E49B45]/10 flex justify-between items-center cursor-pointer hover:bg-[#FFF3CD] transition group" @click="openEditModal(ideaMission, 0, (ideaMission.tasklists[0].todos.length - 1 - tIndex), true)">
+                                        <span class="text-sm font-medium text-[#1D3E53] truncate flex-1">{{ todo.content }}</span><i class="fas fa-pen text-[10px] text-[#E49B45] opacity-0 group-hover:opacity-100"></i>
                                     </div>
                                 </template>
-                                <div v-else class="text-center text-xs text-accent/40 italic py-2">Chưa có ý tưởng nào. Hãy bắt đầu sáng tạo!</div>
+                                <div v-else class="text-center text-xs text-[#E49B45]/40 italic py-1">Trống trơn... Hãy lấp đầy bằng cơ hội!</div>
                             </div>
                         </div>
                     </div>
                 </div>
 
-                <div v-for="blockIndex in (unlockedBlocks + 1)" :key="blockIndex" class="relative mt-4">
+                <div v-for="blockIndex in (unlockedBlocks + 1)" :key="blockIndex" class="relative mt-2">
                     <div v-if="blockIndex <= unlockedBlocks">
                         <div class="flex justify-between items-center px-4 mb-2 group">
                             <div class="flex items-center">
-                                <h3 class="text-xs font-bold uppercase text-white tracking-wider flex items-center cursor-pointer" @click="editBlockName(blockIndex)">
-                                    <span class="text-primary text-[10px] px-2.5 py-1 rounded-md mr-2 transition-all shadow font-black" :class="isPlus ? 'bg-gradient-to-r from-purple-500 to-pink-500 text-white' : 'bg-accent'">{{ getBlockName(blockIndex) }}</span><i class="fas fa-pencil-alt text-[10px] text-white/50 opacity-0 group-hover:opacity-100 transition"></i>
+                                <h3 class="text-xs font-bold uppercase text-[#1D3E53] tracking-wider flex items-center cursor-pointer" @click="editBlockName(blockIndex)">
+                                    <span class="text-white text-[10px] px-2 py-0.5 rounded mr-2 transition-all shadow" :class="isPlus ? 'bg-gradient-to-r from-purple-500 to-pink-500' : 'bg-[#1D3E53]'">{{ getBlockName(blockIndex) }}</span><i class="fas fa-pencil-alt text-[10px] text-gray-400 opacity-0 group-hover:opacity-100 transition"></i>
                                 </h3>
-                                <span class="text-white/50 text-[10px] ml-2 font-mono">{{ getBlockStatus(blockIndex) }}</span>
+                                <span class="text-gray-400 text-[10px] ml-2 font-mono">{{ getBlockStatus(blockIndex) }}</span>
                             </div>
-                            <button v-if="canAddMissionToBlock(blockIndex)" @click="promptAddMission(blockIndex)" class="text-xs bg-secondary/80 text-white px-3 py-1.5 rounded-full hover:bg-accent hover:text-primary shadow-sm transition flex items-center"><i class="fas fa-plus mr-1"></i>Thêm Mission</button>
+                            <button v-if="canAddMissionToBlock(blockIndex)" @click="promptAddMission(blockIndex)" class="text-xs bg-[#77A6B6] text-white px-2 py-1 rounded hover:bg-[#1D3E53] shadow"><i class="fas fa-plus mr-1"></i>Thêm</button>
                         </div>
                         <div class="board-container no-scrollbar pl-3 pr-3" :id="'block-' + blockIndex">
-                            <div v-for="mission in getMissionsForBlock(blockIndex)" :key="mission.id" class="mission-card border shrink-0 theme-normal border-primary/10">
+                            <div v-for="mission in getMissionsForBlock(blockIndex)" :key="mission.id" class="mission-card border shrink-0 theme-normal border-[#1D3E53]/10">
                                 
-                                <div class="p-3 header flex justify-between items-center sticky top-0 z-10 shadow-sm">
-                                    <h2 class="font-bold text-sm truncate uppercase max-w-[70%] flex items-center"><i class="fas fa-flag mr-2 text-accent"></i> {{ mission.title }}</h2>
-                                    <div class="flex gap-1 opacity-80 hover:opacity-100 transition">
-                                        <button @click="editMissionTitle(mission)" class="p-1.5 hover:bg-white/20 rounded transition" title="Sửa tên"><i class="fas fa-pen text-xs"></i></button>
-                                        <button @click="deleteMission(mission.id)" class="p-1.5 hover:bg-red-500/80 rounded transition text-red-300 hover:text-white" title="Xóa Mission"><i class="fas fa-trash text-xs"></i></button>
-                                    </div>
+                                <div class="p-3 header flex justify-between items-center sticky top-0 z-10">
+                                    <h2 class="font-bold text-sm truncate uppercase max-w-[70%]"><i class="fas fa-flag mr-1"></i> {{ mission.title }}</h2>
+                                    <div class="flex gap-1 opacity-70 hover:opacity-100"><button @click="editMissionTitle(mission)" class="px-1"><i class="fas fa-pen text-xs"></i></button><button @click="deleteMission(mission.id)" class="px-1"><i class="fas fa-trash text-xs"></i></button></div>
                                 </div>
                                 
-                                <div class="px-3 py-2 bg-gray-50 border-b border-gray-100 flex justify-between items-center text-[11px] font-bold font-mono">
-                                    <div class="flex items-center text-primary tooltip" title="Tổng thu"><i class="fas fa-arrow-down text-accent mr-1"></i> {{ formatMoney(getMissionStats(mission).income) }}</div>
-                                    <div class="flex items-center text-primary tooltip" title="Tổng chi"><i class="fas fa-arrow-up text-red-400 mr-1"></i> {{ formatMoney(getMissionStats(mission).expense) }}</div>
-                                    <div class="flex items-center tooltip" title="Lợi nhuận ròng" :class="getMissionStats(mission).profit >= 0 ? 'text-green-600' : 'text-red-500'"><span class="mr-1 font-black">=</span> {{ formatMoney(getMissionStats(mission).profit) }}</div>
+                                <div class="px-3 py-1.5 bg-gray-50 border-b border-gray-100 flex justify-between items-center text-[10px] font-bold font-mono">
+                                    <div class="flex items-center text-[#1D3E53] tooltip" title="Tổng thu"><i class="fas fa-arrow-down text-[#77A6B6] mr-1"></i> {{ formatMoney(getMissionStats(mission).income) }}</div>
+                                    <div class="flex items-center text-[#1D3E53] tooltip" title="Tổng chi"><i class="fas fa-arrow-up text-[#E49B45] mr-1"></i> {{ formatMoney(getMissionStats(mission).expense) }}</div>
+                                    <div class="flex items-center tooltip" title="Lợi nhuận ròng" :class="getMissionStats(mission).profit >= 0 ? 'text-green-600' : 'text-red-500'"><span class="mr-1">=</span> {{ formatMoney(getMissionStats(mission).profit) }}</div>
                                 </div>
 
-                                <div class="p-2 bg-[#F0F9F9] border-b border-primary/5 relative"><input @keyup.enter="addTasklist(mission, $event)" placeholder="+ Thêm nhóm việc..." class="w-full text-xs p-2 pr-8 rounded bg-white border border-primary/10 focus:border-secondary focus:ring-1 focus:ring-secondary outline-none text-primary transition"><i class="fas fa-plus absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-400 text-xs pointer-events-none"></i></div>
+                                <div class="p-2 bg-[#F0F9F9] border-b border-[#1D3E53]/5"><input @keyup.enter="addTasklist(mission, $event)" placeholder="+ Thêm nhóm việc..." class="w-full text-xs p-2 rounded bg-white border border-[#1D3E53]/10 focus:border-[#1D3E53] outline-none"></div>
                                 
-                                <div class="mission-body body space-y-4">
+                                <div class="mission-body body space-y-3">
                                     <div v-for="(tl, tlIndex) in mission.tasklists" :key="tl.id" class="mb-3">
-                                        <div class="flex justify-between items-center mb-2 px-1">
-                                            <h4 class="font-bold text-xs text-primary uppercase flex items-center"><i class="fas fa-layer-group mr-1.5 text-secondary/70"></i>{{ tl.title }}</h4>
-                                            <div class="flex items-center">
-                                                <button @click="createQuote(tl)" class="text-secondary/70 hover:text-accent px-1.5 transition" title="Tạo báo giá/Bill"><i class="fas fa-file-invoice-dollar text-xs"></i></button>
-                                                <button @click="editTasklistTitle(mission, tlIndex)" class="text-gray-400 hover:text-primary px-1.5 transition" title="Sửa tên nhóm"><i class="fas fa-pen text-[10px]"></i></button>
-                                                <button @click="deleteTasklist(mission, tlIndex)" class="text-gray-400 hover:text-red-500 px-1.5 transition" title="Xóa nhóm"><i class="fas fa-times text-[10px]"></i></button>
+                                        <div class="flex justify-between items-center mb-1">
+                                            <h4 class="font-bold text-xs text-[#1D3E53] uppercase">{{ tl.title }}</h4>
+                                            <div class="flex">
+                                                <button @click="createQuote(tl)" class="text-[#77A6B6] hover:text-[#1D3E53] px-2" title="Tạo báo giá/Bill"><i class="fas fa-file-invoice-dollar text-xs"></i></button>
+                                                <button @click="editTasklistTitle(mission, tlIndex)" class="text-gray-400 hover:text-[#1D3E53] px-1"><i class="fas fa-pen text-[10px]"></i></button>
+                                                <button @click="deleteTasklist(mission, tlIndex)" class="text-gray-400 hover:text-[#E49B45] px-1"><i class="fas fa-times text-[10px]"></i></button>
                                             </div>
                                         </div>
-                                        <input @keyup.enter="addTodoDirectly(mission, tlIndex, $event)" placeholder="+ Thêm công việc..." class="w-full text-xs p-2 mb-2 rounded border border-gray-200 bg-white/70 focus:bg-white focus:border-secondary outline-none text-primary transition shadow-sm">
-                                        <div class="space-y-2">
-                                            <div v-for="(todo, tIndex) in filteredTodos(tl.todos)" :key="todo.id" class="bg-white p-2.5 rounded-lg shadow-sm text-sm cursor-pointer border-l-[5px] transition hover:shadow-md group" 
+                                        <input @keyup.enter="addTodoDirectly(mission, tlIndex, $event)" placeholder="+ Việc nhỏ..." class="w-full text-xs p-1.5 mb-2 rounded border border-gray-200 bg-white/50 focus:bg-white outline-none">
+                                        <div class="space-y-1.5">
+                                            <div v-for="(todo, tIndex) in filteredTodos(tl.todos)" :key="todo.id" class="bg-white p-2 rounded shadow-sm text-sm cursor-pointer border-l-4" 
                                                 :class="[
                                                     todo.isLoop ? 'card-loop' : '',
                                                     todo.status === 'done' ? 'card-done' : '',
@@ -172,80 +161,67 @@
                                                     todo.status === 'doing' ? 'card-doing' : ''
                                                 ]" 
                                                 @click="openEditModal(mission, tlIndex, tIndex, false)">
-                                                <div class="flex justify-between items-start">
-                                                    <span class="flex-1 mr-2 text-primary font-medium leading-tight">{{ todo.content }}</span>
-                                                    <div class="flex items-center shrink-0 ml-1">
-                                                        <button v-if="todo.money != 0" @click.stop="createSingleQuote(todo)" class="text-gray-300 hover:text-primary mr-2 px-1 opacity-0 group-hover:opacity-100 transition" title="Chốt giá món này"><i class="fas fa-receipt text-xs"></i></button>
+                                                <div class="flex justify-between items-center">
+                                                    <span class="truncate flex-1 mr-2">{{ todo.content }}</span>
+                                                    <div class="flex items-center shrink-0">
+                                                        <button v-if="todo.money != 0" @click.stop="createSingleQuote(todo)" class="text-gray-400 hover:text-[#1D3E53] mr-2 px-1" title="Chốt giá món này"><i class="fas fa-receipt text-xs"></i></button>
                                                         
-                                                        <span v-if="todo.money" :class="todo.money > 0 ? 'text-primary' : 'text-accent'" class="text-[11px] font-bold bg-gray-100 px-1.5 py-0.5 rounded-md">{{ formatMoney(todo.money) }}</span>
+                                                        <span v-if="todo.money" :class="todo.money > 0 ? 'text-[#1D3E53]' : 'text-[#E49B45]'" class="text-[10px] font-bold">{{ formatMoney(todo.money) }}</span>
                                                         
                                                         <button v-if="todo.status === 'debt'" @click.stop="copyDebtReminder(todo)" class="ml-2 text-red-500 hover:text-red-700 animate-pulse" title="Copy tin nhắc nợ"><i class="fas fa-bell text-xs"></i></button>
                                                     </div>
                                                 </div>
-                                                <div v-if="todo.startTime || todo.endTime" class="text-[10px] text-gray-400 mt-1 flex items-center">
-                                                    <i class="far fa-calendar-alt mr-1"></i>
-                                                    <span v-if="todo.startTime">{{ formatDateSimple(todo.startTime) }}</span>
-                                                    <span v-if="todo.startTime && todo.endTime" class="mx-1">-</span>
-                                                    <span v-if="todo.endTime">{{ formatDateSimple(todo.endTime) }}</span>
-                                                </div>
                                             </div>
                                         </div>
                                     </div>
-                                    <div v-if="mission.tasklists.length === 0" class="text-center text-xs text-gray-400 italic py-8 flex flex-col items-center"><i class="fas fa-clipboard-list text-2xl mb-2 opacity-50"></i>Chưa có nhóm việc nào</div>
+                                    <div v-if="mission.tasklists.length === 0" class="text-center text-xs text-gray-400 italic py-4">Chưa có nhóm việc</div>
                                 </div>
                             </div>
-                            <div v-if="getMissionsForBlock(blockIndex).length === 0" class="mission-card border-2 border-dashed border-white/30 rounded-xl flex flex-col items-center justify-center text-white/50 text-sm bg-white/5 min-h-[250px] hover:bg-white/10 transition cursor-pointer" @click="promptAddMission(blockIndex)"><i class="fas fa-plus-circle text-4xl mb-3 text-accent"></i><span class="font-medium">Block này còn trống</span><button class="mt-3 bg-accent text-primary px-4 py-2 rounded-full text-xs font-bold shadow-sm hover:shadow-md transition">Thêm Mission ngay</button></div>
+                            <div v-if="getMissionsForBlock(blockIndex).length === 0" class="mission-card border-2 border-dashed border-gray-300 rounded-xl flex flex-col items-center justify-center text-gray-400 text-sm bg-white/50 min-h-[200px]"><i class="fas fa-wind text-2xl mb-2"></i><span>Block trống</span><button @click="promptAddMission(blockIndex)" class="mt-2 text-[#1D3E53] underline font-bold">Thêm Mission</button></div>
                         </div>
                     </div>
-                    <div v-else class="mt-6 border-t-2 border-dashed border-accent/30 pt-6 px-4 mx-4"><div class="bg-white/10 rounded-2xl shadow-xl border-2 border-accent p-8 text-center relative overflow-hidden"><div class="absolute top-0 right-0 bg-accent text-primary text-xs font-bold px-3 py-1.5 rounded-bl shadow-sm">STORE</div><i class="fas fa-lock text-5xl text-white mb-4 opacity-80"></i><h3 class="text-xl font-bold text-white uppercase mb-2">Mở khóa Block {{ blockIndex }}</h3><p class="text-white/70 text-sm mb-4">Mở rộng không gian làm việc của bạn.</p><button @click="unlockNextBlock" class="w-full bg-accent text-primary py-3.5 rounded-xl font-bold shadow-lg mt-2 hover:bg-[#FFD54F] transition transform active:scale-95 flex items-center justify-center"><i class="fas fa-unlock mr-2"></i>Mua ngay (Demo)</button></div></div>
+                    <div v-else class="mt-4 border-t-2 border-dashed border-[#E49B45]/30 pt-4 px-2 mx-2"><div class="bg-white rounded-xl shadow-lg border-2 border-[#E49B45] p-6 text-center relative overflow-hidden"><div class="absolute top-0 right-0 bg-[#E49B45] text-white text-[10px] font-bold px-2 py-1 rounded-bl">STORE</div><i class="fas fa-lock text-4xl text-[#1D3E53] mb-3"></i><h3 class="text-lg font-bold text-[#1D3E53] uppercase">Mở khóa Block {{ blockIndex }}</h3><button @click="unlockNextBlock" class="w-full bg-[#E49B45] text-white py-3 rounded-lg font-bold shadow mt-2 hover:bg-[#d88d3a]">Mua ngay (Demo)</button></div></div>
                 </div>
             </div>
         </div>
 
-        <div v-if="showReportModal" class="fixed inset-0 z-[120] flex items-center justify-center bg-black bg-opacity-80 p-4 backdrop-blur-md transition-all" @click="showReportModal = false">
-            <div class="bg-white rounded-2xl shadow-2xl w-full max-w-md overflow-hidden animate-fade-in flex flex-col max-h-[90vh]" @click.stop>
-                <div class="bg-secondary p-4 text-white font-bold flex justify-between items-center sticky top-0 z-10"><span class="text-lg flex items-center"><i class="fas fa-chart-pie mr-2 text-accent"></i> Báo cáo Thu Chi</span><button @click="showReportModal = false" class="text-white/80 hover:text-white w-8 h-8 flex items-center justify-center rounded-full hover:bg-white/20 transition"><i class="fas fa-times"></i></button></div>
-                <div class="overflow-y-auto p-5 space-y-5 bg-gray-50">
-                    <div class="bg-white p-5 rounded-2xl shadow-sm border border-gray-100 text-center relative overflow-hidden">
-                        <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-accent to-secondary"></div>
-                        <div class="text-xs text-gray-500 font-bold uppercase mb-3 tracking-wider">Lợi nhuận ròng (Net Profit)</div>
-                        <div class="text-4xl font-black my-2" :class="(stats.income - stats.expense) >= 0 ? 'text-green-600' : 'text-red-500'">{{ formatMoney(stats.income - stats.expense) }}</div>
-                        <div class="flex justify-between mt-6 text-sm px-2 bg-gray-50 p-3 rounded-xl">
-                            <div class="text-primary font-bold flex flex-col"><span class="text-[10px] text-gray-400 uppercase font-medium mb-1">Tổng thu</span><span class="flex items-center text-green-600"><i class="fas fa-arrow-down text-accent mr-1.5"></i> {{ formatMoney(stats.income) }}</span></div>
-                            <div class="h-10 w-px bg-gray-200"></div>
-                            <div class="text-red-500 font-bold flex flex-col text-right"><span class="text-[10px] text-gray-400 uppercase font-medium mb-1">Tổng chi</span><span class="flex items-center justify-end"><i class="fas fa-arrow-up mr-1.5"></i> {{ formatMoney(stats.expense) }}</span></div>
+        <div v-if="showReportModal" class="fixed inset-0 z-[120] flex items-center justify-center bg-black bg-opacity-80 p-4 backdrop-blur-sm" @click="showReportModal = false">
+            <div class="bg-white rounded-xl shadow-2xl w-full max-w-md overflow-hidden animate-fade-in flex flex-col max-h-[90vh]" @click.stop>
+                <div class="bg-[#1D3E53] p-4 text-white font-bold flex justify-between items-center sticky top-0 z-10"><span class="text-lg"><i class="fas fa-chart-pie mr-2"></i> Báo cáo Thu Chi</span><button @click="showReportModal = false" class="text-white/80 hover:text-white"><i class="fas fa-times"></i></button></div>
+                <div class="overflow-y-auto p-4 space-y-4">
+                    <div class="bg-[#EAF4F4] p-4 rounded-xl border border-[#1D3E53]/10 text-center">
+                        <div class="text-xs text-[#1D3E53] font-bold uppercase mb-2">Lợi nhuận ròng (Net Profit)</div>
+                        <div class="text-3xl font-black" :class="(stats.income - stats.expense) >= 0 ? 'text-[#1D3E53]' : 'text-[#E49B45]'">{{ formatMoney(stats.income - stats.expense) }}</div>
+                        <div class="flex justify-between mt-4 text-sm px-4">
+                            <div class="text-[#77A6B6] font-bold"><i class="fas fa-arrow-down"></i> {{ formatMoney(stats.income) }}</div>
+                            <div class="text-[#E49B45] font-bold"><i class="fas fa-arrow-up"></i> {{ formatMoney(stats.expense) }}</div>
                         </div>
                     </div>
-                    <div>
-                    <div class="text-xs font-bold text-primary uppercase border-b border-gray-200 pb-2 mb-3 flex items-center"><i class="fas fa-list-ul mr-2 text-secondary"></i>Chi tiết theo Mission</div>
+                    <div class="text-xs font-bold text-[#1D3E53] uppercase border-b pb-1 mt-2">Chi tiết theo Mission</div>
                     <div v-if="missionReports.length > 0" class="space-y-3">
-                        <div v-for="report in missionReports" :key="report.title" class="bg-white border border-gray-200 rounded-xl p-3 shadow-sm hover:shadow-md transition">
-                            <div class="flex justify-between items-center mb-2.5"><div class="font-bold text-primary text-sm truncate max-w-[60%] flex items-center"><i class="fas fa-flag text-xs text-secondary/70 mr-2"></i>{{ report.title }}</div><div class="font-black text-sm px-2 py-0.5 rounded-md" :class="report.profit >= 0 ? 'text-green-700 bg-green-50' : 'text-red-700 bg-red-50'">{{ report.profit > 0 ? '+' : '' }}{{ formatMoney(report.profit) }}</div></div>
-                            <div class="h-2 w-full bg-gray-100 rounded-full overflow-hidden flex mb-2.5"><div v-if="report.income > 0" class="h-full bg-accent" :style="{ width: (report.income / (report.income + report.expense || 1) * 100) + '%' }"></div><div v-if="report.expense > 0" class="h-full bg-red-400" :style="{ width: (report.expense / (report.income + report.expense || 1) * 100) + '%' }"></div></div>
-                            <div class="flex justify-between text-[11px] text-gray-500 font-mono bg-gray-50 p-1.5 rounded-lg"><span>Thu: <span class="font-bold text-primary">{{ formatMoney(report.income) }}</span></span><span>Chi: <span class="font-bold text-red-500">{{ formatMoney(report.expense) }}</span></span></div>
+                        <div v-for="report in missionReports" :key="report.title" class="bg-white border border-gray-200 rounded-lg p-3 shadow-sm">
+                            <div class="flex justify-between items-center mb-2"><div class="font-bold text-[#1D3E53] text-sm truncate max-w-[60%]">{{ report.title }}</div><div class="font-bold text-sm" :class="report.profit >= 0 ? 'text-[#1D3E53]' : 'text-[#E49B45]'">{{ report.profit > 0 ? '+' : '' }}{{ formatMoney(report.profit) }}</div></div>
+                            <div class="h-1.5 w-full bg-gray-100 rounded-full overflow-hidden flex mb-2"><div v-if="report.income > 0" class="h-full bg-[#77A6B6]" :style="{ width: (report.income / (report.income + report.expense || 1) * 100) + '%' }"></div><div v-if="report.expense > 0" class="h-full bg-[#E49B45]" :style="{ width: (report.expense / (report.income + report.expense || 1) * 100) + '%' }"></div></div>
+                            <div class="flex justify-between text-[10px] text-gray-500 font-mono"><span>Thu: {{ formatMoney(report.income) }}</span><span>Chi: {{ formatMoney(report.expense) }}</span></div>
                         </div>
                     </div>
-                    <div v-else class="text-center text-gray-400 text-sm py-8 flex flex-col items-center"><i class="fas fa-file-invoice text-3xl mb-2 opacity-50"></i>Chưa có dữ liệu tài chính</div>
-                    </div>
+                    <div v-else class="text-center text-gray-400 text-sm py-4">Chưa có dữ liệu tài chính</div>
                 </div>
             </div>
         </div>
 
-        <div v-if="editingTodo" class="fixed inset-0 z-[60] flex items-center justify-center bg-black bg-opacity-70 p-4 backdrop-blur-md transition-all"><div class="bg-white rounded-2xl shadow-2xl w-full max-w-md overflow-hidden animate-fade-in border-2 border-secondary flex flex-col max-h-[95vh]"><div class="bg-secondary p-4 text-white font-bold flex justify-between items-center shrink-0"><span class="text-lg flex items-center"><i class="fas mr-2" :class="editingTodo.isIdea ? 'fa-lightbulb text-accent' : 'fa-edit'"></i> {{ editingTodo.isIdea ? 'Chi tiết Ý tưởng' : 'Chỉnh sửa Công việc' }}</span><button @click="closeEditModal" class="text-white/80 hover:text-white w-8 h-8 flex items-center justify-center rounded-full hover:bg-white/20 transition"><i class="fas fa-times"></i></button></div><div class="p-6 space-y-5 overflow-y-auto text-primary bg-gray-50"><div><label class="block text-xs font-bold text-primary uppercase mb-1.5 ml-1">Nội dung</label><textarea v-model="editForm.content" rows="2" class="w-full p-3 border border-primary/20 rounded-xl bg-white text-primary focus:ring-2 focus:ring-secondary focus:border-transparent outline-none font-bold text-base shadow-sm resize-none"></textarea></div><template v-if="!editingTodo.isIdea"><div class="flex items-center justify-between bg-white p-4 rounded-xl border border-[#8B5CF6]/30 shadow-sm"><span class="text-sm font-bold text-primary flex items-center"><i class="fas fa-sync-alt text-[#8B5CF6] mr-3 text-lg"></i> Công việc lặp lại?</span><label class="relative inline-flex items-center cursor-pointer"><input type="checkbox" v-model="editForm.isLoop" class="sr-only peer"><div class="w-12 h-7 bg-gray-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-6 after:w-6 after:transition-all peer-checked:bg-[#8B5CF6] shadow-inner"></div></label></div><div v-if="editForm.isLoop" class="bg-[#F5F3FF] p-4 rounded-xl border border-[#8B5CF6]/30 shadow-sm animate-fade-in"><button @click="checkInLoop" class="w-full bg-[#8B5CF6] text-white py-3 rounded-xl font-bold shadow-md hover:bg-[#7C3AED] mb-4 transition transform active:scale-95 flex items-center justify-center"><i class="fas fa-check-circle mr-2 text-xl"></i>Ghi nhận hôm nay</button><div class="text-xs font-bold text-[#8B5CF6] uppercase mb-2 ml-1">Lịch sử ghi nhận</div><div class="max-h-32 overflow-y-auto text-sm space-y-2 custom-scrollbar pr-1"><div v-for="(log, idx) in (editForm.logs || []).slice().reverse()" :key="idx" class="text-primary flex justify-between items-center bg-white p-2 rounded-lg border border-[#8B5CF6]/10 shadow-sm"><span class="font-medium">{{ formatDateFull(log) }}</span><span class="text-[#8B5CF6] bg-[#F5F3FF] p-1 rounded-full"><i class="fas fa-check text-xs"></i></span></div></div></div><div class="flex gap-4" v-if="!editForm.isLoop"><div class="flex-1"><label class="block text-xs font-bold text-primary uppercase mb-1.5 ml-1">Số tiền (VNĐ)</label><div class="relative"><input type="number" v-model.number="editForm.money" placeholder="0" class="w-full p-3 pl-8 border border-primary/20 rounded-xl bg-white text-primary font-mono font-bold focus:ring-2 focus:ring-secondary focus:border-transparent outline-none shadow-sm"><i class="fas fa-coins absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i></div></div><div class="flex-1"><label class="block text-xs font-bold text-primary uppercase mb-1.5 ml-1">Trạng thái</label><div class="relative"><select v-model="editForm.status" class="w-full p-3 pl-8 border border-primary/20 rounded-xl bg-white text-primary font-medium focus:ring-2 focus:ring-secondary focus:border-transparent outline-none shadow-sm appearance-none"><option value="doing">Đang làm</option><option value="done">Hoàn thành</option><option value="debt" class="text-red-500 font-bold">❗ Khách nợ</option><option value="pause">Tạm dừng</option><option value="cancel">Đã hủy</option></select><i class="fas fa-info-circle absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i><i class="fas fa-chevron-down absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 text-xs pointer-events-none"></i></div></div></div><div class="flex gap-4"><div class="flex-1"><label class="block text-xs font-bold text-primary uppercase mb-1.5 ml-1">Bắt đầu</label><div class="relative"><input type="date" v-model="editForm.startTime" class="w-full p-3 pl-8 border border-primary/20 rounded-xl bg-white text-primary focus:ring-2 focus:ring-secondary focus:border-transparent outline-none shadow-sm"><i class="far fa-calendar-alt absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i></div></div><div class="flex-1"><label class="block text-xs font-bold text-primary uppercase mb-1.5 ml-1">Kết thúc</label><div class="relative"><input type="date" v-model="editForm.endTime" class="w-full p-3 pl-8 border border-primary/20 rounded-xl bg-white text-primary focus:ring-2 focus:ring-secondary focus:border-transparent outline-none shadow-sm"><i class="far fa-calendar-check absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i></div></div></div></template><div><label class="block text-xs font-bold text-primary uppercase mb-1.5 ml-1">Ghi chú</label><textarea v-model="editForm.note" rows="3" placeholder="Thêm ghi chú chi tiết..." class="w-full p-3 border border-primary/20 rounded-xl bg-white text-primary text-sm focus:ring-2 focus:ring-secondary focus:border-transparent outline-none shadow-sm resize-none"></textarea></div><div class="flex gap-3 pt-3 border-t border-gray-200"><button @click="deleteEditingTodo" class="flex-none bg-red-50 text-red-500 p-3 rounded-xl font-bold hover:bg-red-100 transition w-12 h-12 flex items-center justify-center shadow-sm" title="Xóa"><i class="fas fa-trash"></i></button><button @click="saveEdit" class="flex-1 w-full bg-secondary text-white p-3 rounded-xl font-bold shadow-md hover:bg-primary transition transform active:scale-95 flex items-center justify-center"><i class="fas fa-save mr-2"></i> Lưu thay đổi</button></div><div class="bg-white p-4 rounded-xl border border-primary/10 shadow-sm mt-2"><div class="text-xs font-bold text-primary uppercase mb-3 flex items-center"><i class="fas fa-exchange-alt mr-2 text-secondary"></i> Di chuyển công việc</div><div class="space-y-3"><div class="relative"><select v-model="moveTarget.missionId" @change="onMoveMissionChange" class="w-full p-2.5 pl-8 text-sm border border-primary/20 rounded-lg bg-white focus:ring-2 focus:ring-secondary focus:border-transparent outline-none shadow-sm appearance-none"><option value="" disabled>Chọn Mission đích...</option><option v-for="m in normalMissions" :key="m.id" :value="m.id">{{ m.title }}</option></select><i class="fas fa-flag absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 text-xs"></i><i class="fas fa-chevron-down absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 text-xs pointer-events-none"></i></div><div class="relative" v-if="moveTarget.missionId"><select v-model="moveTarget.tasklistId" class="w-full p-2.5 pl-8 text-sm border border-primary/20 rounded-lg bg-white focus:ring-2 focus:ring-secondary focus:border-transparent outline-none shadow-sm appearance-none"><option value="" disabled>Chọn Nhóm việc đích...</option><option v-for="tl in targetTasklists" :key="tl.id" :value="tl.id">{{ tl.title }}</option></select><i class="fas fa-layer-group absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 text-xs"></i><i class="fas fa-chevron-down absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 text-xs pointer-events-none"></i></div><button v-if="moveTarget.tasklistId" @click="moveTodo" class="w-full bg-secondary/90 text-white py-2.5 rounded-lg text-sm font-bold hover:bg-primary transition shadow-md flex items-center justify-center"><i class="fas fa-share mr-2"></i>Chuyển ngay</button></div></div></div></div></div>
-        
-        <div v-if="showQuickAddModal" class="fixed inset-0 z-[100] flex items-center justify-center bg-black bg-opacity-80 p-4 backdrop-blur-md transition-all"><div class="bg-white rounded-2xl shadow-2xl w-full max-w-sm overflow-hidden animate-fade-in border-2 border-secondary"><div class="bg-secondary p-4 text-white font-bold flex justify-between items-center"><span class="text-lg flex items-center"><i class="fas fa-plus-circle mr-2 text-accent"></i> Thêm nhanh</span><button @click="showQuickAddModal = false" class="text-white/80 hover:text-white w-8 h-8 flex items-center justify-center rounded-full hover:bg-white/20 transition"><i class="fas fa-times"></i></button></div><div class="p-6 space-y-5 text-primary bg-gray-50"><div><label class="block text-xs font-bold text-primary uppercase mb-1.5 ml-1">Nội dung công việc</label><input v-model="quickAddForm.content" class="w-full p-3 border border-primary/20 rounded-xl bg-white text-primary focus:ring-2 focus:ring-secondary focus:border-transparent outline-none font-bold text-lg shadow-sm" placeholder="Nhập nội dung..."></div><div><label class="block text-xs font-bold text-primary uppercase mb-1.5 ml-1">Chọn Mục tiêu (Mission)</label><div class="relative"><select v-model="quickAddForm.missionId" @change="onMissionChange" class="w-full p-3 pl-8 border border-primary/20 rounded-xl bg-white text-primary font-medium focus:ring-2 focus:ring-secondary focus:border-transparent outline-none shadow-sm appearance-none"><option v-for="m in normalMissions" :key="m.id" :value="m.id">{{ m.title }}</option></select><i class="fas fa-flag absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i><i class="fas fa-chevron-down absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 text-xs pointer-events-none"></i></div></div><div v-if="selectedMissionHasTasklists"><label class="block text-xs font-bold text-primary uppercase mb-1.5 ml-1">Chọn Nhóm việc</label><div class="relative"><select v-model="quickAddForm.tasklistId" class="w-full p-3 pl-8 border border-primary/20 rounded-xl bg-white text-primary font-medium focus:ring-2 focus:ring-secondary focus:border-transparent outline-none shadow-sm appearance-none"><option v-for="tl in availableTasklists" :key="tl.id" :value="tl.id">{{ tl.title }}</option></select><i class="fas fa-layer-group absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i><i class="fas fa-chevron-down absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 text-xs pointer-events-none"></i></div></div><div class="pt-3"><button @click="saveQuickAdd" class="w-full bg-secondary text-white py-3.5 rounded-xl font-bold shadow-lg hover:bg-primary transition transform active:scale-95 flex items-center justify-center"><i class="fas fa-check mr-2"></i>Tạo & Nhập chi tiết</button></div></div></div></div>
-        
-        <div v-if="showCelebrationModal" class="fixed inset-0 z-[110] flex items-center justify-center bg-black bg-opacity-90 p-4 animate-fade-in backdrop-blur-sm" @click="showCelebrationModal = false"><div class="bg-gradient-to-br from-secondary to-primary rounded-3xl shadow-2xl w-full max-w-sm text-center p-8 border-4 border-accent relative overflow-hidden transform transition-all scale-100" @click.stop><div class="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/stardust.png')] opacity-20 animate-pulse"></div><div class="relative z-10"><i class="fas fa-trophy text-7xl text-accent mb-6 animate-bounce drop-shadow-[0_5px_5px_rgba(0,0,0,0.5)] inline-block"></i><h2 class="text-4xl font-black text-white mb-3 uppercase tracking-wider drop-shadow-md">TUYỆT VỜI!</h2><p class="text-white/90 text-xl mb-8 font-medium leading-relaxed drop-shadow" v-text="celebrationMessage"></p><div class="bg-white/10 rounded-2xl p-5 mb-8 backdrop-blur-sm border border-white/20 shadow-inner"><p class="text-sm text-accent/80 uppercase tracking-widest font-bold mb-2">Đã hoàn thành xuất sắc</p><p class="text-2xl font-black text-white tracking-wide truncate" v-text="completedMissionTitle"></p></div><button @click="showCelebrationModal = false" class="bg-accent text-primary px-10 py-4 rounded-full font-black shadow-xl hover:bg-[#FFD54F] transition transform hover:scale-105 active:scale-95 flex items-center mx-auto"><i class="fas fa-star mr-2"></i>Tiếp tục chiến!</button></div></div></div>
+        <div v-if="editingTodo" class="fixed inset-0 z-[60] flex items-center justify-center bg-black bg-opacity-70 p-4 backdrop-blur-sm"><div class="bg-[#BEE9E4] rounded-xl shadow-2xl w-full max-w-sm overflow-hidden animate-fade-in border-2 border-[#1D3E53] flex flex-col max-h-[95vh]"><div class="bg-[#1D3E53] p-3 text-white font-bold flex justify-between items-center shrink-0"><span><i class="fas" :class="editingTodo.isIdea ? 'fa-lightbulb' : 'fa-edit'"></i> Chi tiết</span><button @click="closeEditModal" class="text-white/80 hover:text-white"><i class="fas fa-times"></i></button></div><div class="p-5 space-y-4 overflow-y-auto"><div><label class="block text-xs font-bold text-[#1D3E53] uppercase mb-1">Nội dung</label><input v-model="editForm.content" class="w-full p-3 border border-[#1D3E53]/20 rounded-lg bg-white text-[#1D3E53] focus:ring-2 ring-[#1D3E53] outline-none font-bold text-lg"></div><template v-if="!editingTodo.isIdea"><div class="flex items-center justify-between bg-white p-3 rounded-lg border border-[#8B5CF6]/30"><span class="text-sm font-bold text-[#1D3E53] flex items-center"><i class="fas fa-sync-alt text-[#8B5CF6] mr-2"></i> Lặp lại?</span><label class="relative inline-flex items-center cursor-pointer"><input type="checkbox" v-model="editForm.isLoop" class="sr-only peer"><div class="w-11 h-6 bg-gray-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-[#8B5CF6]"></div></label></div><div v-if="editForm.isLoop" class="bg-[#F5F3FF] p-3 rounded-lg border border-[#8B5CF6]/30"><button @click="checkInLoop" class="w-full bg-[#8B5CF6] text-white py-2 rounded-lg font-bold shadow hover:bg-[#7C3AED] mb-3 transition"><i class="fas fa-check-circle mr-2"></i>Ghi nhận hôm nay</button><div class="max-h-24 overflow-y-auto text-xs space-y-1"><div v-for="(log, idx) in (editForm.logs || []).slice().reverse()" :key="idx" class="text-[#1D3E53] flex justify-between border-b border-[#8B5CF6]/10 pb-1"><span>{{ formatDateFull(log) }}</span><span class="text-[#8B5CF6]"><i class="fas fa-check"></i></span></div></div></div><div class="flex gap-3" v-if="!editForm.isLoop"><div class="flex-1"><label class="block text-xs font-bold text-[#1D3E53] uppercase mb-1">Tiền</label><input type="number" v-model.number="editForm.money" placeholder="0" class="w-full p-2 border border-[#1D3E53]/20 rounded-lg bg-white text-[#1D3E53] font-mono font-bold"></div><div class="flex-1"><label class="block text-xs font-bold text-[#1D3E53] uppercase mb-1">Trạng thái</label><select v-model="editForm.status" class="w-full p-2 border border-[#1D3E53]/20 rounded-lg bg-white text-[#1D3E53]"><option value="doing">Đang làm</option><option value="done">Hoàn thành</option><option value="debt" class="text-red-500 font-bold">❗ Khách nợ</option><option value="pause">Tạm dừng</option><option value="cancel">Đã hủy</option></select></div></div><div class="flex gap-3"><div class="flex-1"><label class="block text-xs font-bold text-[#1D3E53] uppercase mb-1">Bắt đầu</label><input type="date" v-model="editForm.startTime" class="w-full p-2 border border-[#1D3E53]/20 rounded-lg bg-white text-[#1D3E53]"></div><div class="flex-1"><label class="block text-xs font-bold text-[#1D3E53] uppercase mb-1">Kết thúc</label><input type="date" v-model="editForm.endTime" class="w-full p-2 border border-[#1D3E53]/20 rounded-lg bg-white text-[#1D3E53]"></div></div></template><div><label class="block text-xs font-bold text-[#1D3E53] uppercase mb-1">Ghi chú</label><textarea v-model="editForm.note" rows="3" class="w-full p-2 border border-[#1D3E53]/20 rounded-lg bg-white text-[#1D3E53] text-sm"></textarea></div><div class="flex gap-2 pt-2"><button @click="deleteEditingTodo" class="flex-1 bg-[#E49B45]/20 text-[#E49B45] py-3 rounded-lg font-bold hover:bg-[#E49B45]/30 transition"><i class="fas fa-trash"></i></button><button @click="saveEdit" class="flex-2 w-full bg-[#1D3E53] text-white py-3 rounded-lg font-bold shadow-lg hover:bg-[#77A6B6] transition transform active:scale-95"><i class="fas fa-save mr-1"></i> Lưu lại</button></div><hr class="border-[#1D3E53]/20 my-2"><div class="bg-white/50 p-3 rounded-lg border border-[#1D3E53]/10"><div class="text-xs font-bold text-[#1D3E53] uppercase mb-2"><i class="fas fa-exchange-alt mr-1"></i> Di chuyển</div><div class="space-y-2"><select v-model="moveTarget.missionId" @change="onMoveMissionChange" class="w-full p-2 text-sm border border-[#1D3E53]/20 rounded bg-white"><option value="" disabled>Chọn Mission...</option><option v-for="m in normalMissions" :key="m.id" :value="m.id">{{ m.title }}</option></select><select v-if="moveTarget.missionId" v-model="moveTarget.tasklistId" class="w-full p-2 text-sm border border-[#1D3E53]/20 rounded bg-white"><option value="" disabled>Chọn Nhóm việc...</option><option v-for="tl in targetTasklists" :key="tl.id" :value="tl.id">{{ tl.title }}</option></select><button v-if="moveTarget.tasklistId" @click="moveTodo" class="w-full bg-[#77A6B6] text-white py-2 rounded text-sm font-bold hover:bg-[#1D3E53] transition shadow">Chuyển ngay</button></div></div></div></div></div>
+        <div v-if="showQuickAddModal" class="fixed inset-0 z-[100] flex items-center justify-center bg-black bg-opacity-80 p-4 backdrop-blur-sm"><div class="bg-[#BEE9E4] rounded-xl shadow-2xl w-full max-w-sm overflow-hidden animate-fade-in border-2 border-[#1D3E53]"><div class="bg-[#1D3E53] p-3 text-white font-bold flex justify-between items-center"><span><i class="fas fa-plus-circle"></i> Thêm nhanh</span><button @click="showQuickAddModal = false" class="text-white/80 hover:text-white"><i class="fas fa-times"></i></button></div><div class="p-5 space-y-4"><div><label class="block text-xs font-bold text-[#1D3E53] uppercase mb-1">Nội dung</label><input v-model="quickAddForm.content" class="w-full p-3 border border-[#1D3E53]/20 rounded-lg bg-white text-[#1D3E53] focus:ring-2 ring-[#1D3E53] outline-none font-bold text-lg"></div><div><label class="block text-xs font-bold text-[#1D3E53] uppercase mb-1">Chọn Mục tiêu</label><select v-model="quickAddForm.missionId" @change="onMissionChange" class="w-full p-3 border border-[#1D3E53]/20 rounded-lg bg-white text-[#1D3E53] font-medium"><option v-for="m in normalMissions" :key="m.id" :value="m.id">{{ m.title }}</option></select></div><div v-if="selectedMissionHasTasklists"><label class="block text-xs font-bold text-[#1D3E53] uppercase mb-1">Chọn Nhóm việc</label><select v-model="quickAddForm.tasklistId" class="w-full p-3 border border-[#1D3E53]/20 rounded-lg bg-white text-[#1D3E53]"><option v-for="tl in availableTasklists" :key="tl.id" :value="tl.id">{{ tl.title }}</option></select></div><div class="pt-2"><button @click="saveQuickAdd" class="w-full bg-[#1D3E53] text-white py-3 rounded-lg font-bold shadow-lg hover:bg-[#77A6B6] transition transform active:scale-95"><i class="fas fa-check mr-2"></i>Tạo & Nhập chi tiết</button></div></div></div></div>
+        <div v-if="showCelebrationModal" class="fixed inset-0 z-[110] flex items-center justify-center bg-black bg-opacity-90 p-4 animate-fade-in" @click="showCelebrationModal = false"><div class="bg-gradient-to-br from-[#1D3E53] to-[#77A6B6] rounded-2xl shadow-2xl w-full max-w-sm text-center p-8 border-4 border-[#E49B45] relative overflow-hidden" @click.stop><div class="absolute inset-0 bg-white/10"></div><i class="fas fa-trophy text-6xl text-yellow-300 mb-4 animate-bounce relative z-10"></i><h2 class="text-3xl font-bold text-white mb-2 relative z-10">TUYỆT VỜI!</h2><p class="text-white/90 text-lg mb-6 relative z-10" v-text="celebrationMessage"></p><div class="bg-white/20 rounded-lg p-4 mb-6 relative z-10"><p class="text-sm text-white/80 uppercase tracking-widest">Đã hoàn thành</p><p class="text-xl font-bold text-white mt-1" v-text="completedMissionTitle"></p></div><button @click="showCelebrationModal = false" class="bg-[#E49B45] text-white px-8 py-3 rounded-full font-bold shadow-lg hover:bg-yellow-500 transition transform hover:scale-105 relative z-10">Tiếp tục chiến!</button></div></div>
     </div>
 
     <script type="module">
         import { createApp } from 'https://unpkg.com/vue@3/dist/vue.esm-browser.js';
         import { initializeApp } from 'https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js';
-        import { getFirestore, collection, addDoc, onSnapshot, doc, updateDoc, deleteDoc, query, orderBy, where } from 'https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore.js';
+        import { getFirestore, collection, addDoc, onSnapshot, doc, updateDoc, deleteDoc, query, orderBy } from 'https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore.js';
 
         const firebaseConfig = { apiKey: "AIzaSyDFFeWWNoL3jZrv9FqLwnnbXv8p8eRyF5g", authDomain: "zxtodo-39f87.firebaseapp.com", projectId: "zxtodo-39f87", storageBucket: "zxtodo-39f87.firebasestorage.app", messagingSenderId: "1020484648812", appId: "1:1020484648812:web:83cadd3c7943d87472bd49" };
-        const app = initializeApp(firebaseConfig);
-        const db = getFirestore(app);
+        const app = initializeApp(firebaseConfig); const db = getFirestore(app);
 
         createApp({
             data() {
@@ -272,37 +248,15 @@
                 targetTasklists() { return this.targetMission ? this.targetMission.tasklists : []; }
             },
             mounted() {
-                // TỰ ĐỘNG LOAD DỮ LIỆU KHÔNG CẦN LOGIN
-                this.loadData();
+                if(localStorage.getItem('zx_unlocked_blocks')) this.unlockedBlocks = parseInt(localStorage.getItem('zx_unlocked_blocks'));
+                if(localStorage.getItem('zx_is_plus')) this.isPlus = localStorage.getItem('zx_is_plus') === 'true';
+                if(localStorage.getItem('zx_block_names')) this.blockNames = JSON.parse(localStorage.getItem('zx_block_names'));
+                const q = query(collection(db, "missions"), orderBy("createdAt", "desc"));
+                onSnapshot(q, (snapshot) => { let list = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() })); this.missions = list; if(!list.find(m => m.title.includes("Hộp ý tưởng"))) { addDoc(collection(db, "missions"), { title: "Hộp ý tưởng", tasklists: [{id: 'tldefault', title: 'Ý tưởng', todos:[]}], createdAt: Date.now() }); } this.loading = false; });
                 window.addEventListener('keydown', this.handleKeyNav);
             },
-            unmounted() {
-                window.removeEventListener('keydown', this.handleKeyNav);
-            },
+            unmounted() { window.removeEventListener('keydown', this.handleKeyNav); },
             methods: {
-                loadData() {
-                    if(localStorage.getItem('zx_unlocked_blocks')) this.unlockedBlocks = parseInt(localStorage.getItem('zx_unlocked_blocks'));
-                    if(localStorage.getItem('zx_is_plus')) this.isPlus = localStorage.getItem('zx_is_plus') === 'true';
-                    if(localStorage.getItem('zx_block_names')) this.blockNames = JSON.parse(localStorage.getItem('zx_block_names'));
-                    
-                    // QUERY TẤT CẢ DỮ LIỆU (KHÔNG PHÂN BIỆT USER)
-                    const q = query(collection(db, "missions"), orderBy("createdAt", "desc"));
-                    
-                    this.loading = true;
-                    onSnapshot(q, (snapshot) => {
-                        let list = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-                        this.missions = list;
-                        if(!list.find(m => m.title.includes("Hộp ý tưởng"))) {
-                            addDoc(collection(db, "missions"), {
-                                title: "Hộp ý tưởng",
-                                tasklists: [{id: 'tldefault', title: 'Ý tưởng', todos:[]}],
-                                createdAt: Date.now()
-                            });
-                        }
-                        this.loading = false;
-                    });
-                },
-
                 handleKeyNav(e) { const active = document.activeElement; if (active && (active.tagName === 'INPUT' || active.tagName === 'TEXTAREA' || active.isContentEditable)) return; if (this.showQuickAddModal || this.editingTodo || this.showCelebrationModal || this.showReportModal) return; if (e.key === 'ArrowRight' || e.key === 'ArrowLeft') { e.preventDefault(); const direction = e.key === 'ArrowRight' ? 1 : -1; const scrollAmount = 340 * direction; document.querySelectorAll('.board-container').forEach(container => container.scrollBy({ left: scrollAmount, behavior: 'smooth' })); } },
                 generateId() { return Date.now().toString(36) + Math.random().toString(36).substr(2); },
                 formatMoney(value) { return new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(value); },
@@ -345,36 +299,9 @@
                     navigator.clipboard.writeText(text).then(() => { this.showToast("Đã copy tin nhắc nợ!", '<i class="fas fa-bell"></i>', "Nhắc nhẹ nhàng"); });
                 },
 
-                async addMission(title = null) {
-                    if (this.normalMissions.length >= this.maxCapacity) { alert(`Đã hết chỗ trống!`); return; }
-                    const finalTitle = typeof title === 'string' ? title : this.newMissionTitle;
-                    if (!finalTitle || !finalTitle.trim()) return;
-                    await addDoc(collection(db, "missions"), {
-                        title: finalTitle,
-                        tasklists: [],
-                        createdAt: Date.now()
-                    });
-                    this.newMissionTitle = '';
-                },
+                async addMission(title = null) { if (this.normalMissions.length >= this.maxCapacity) { alert(`Đã hết chỗ trống!`); return; } const finalTitle = typeof title === 'string' ? title : this.newMissionTitle; if (!finalTitle || !finalTitle.trim()) return; await addDoc(collection(db, "missions"), { title: finalTitle, tasklists: [], createdAt: Date.now() }); this.newMissionTitle = ''; },
                 async updateMission(mission) { const { id, ...data } = mission; await updateDoc(doc(db, "missions", id), data); },
-                
-                // --- PATCH: XỬ LÝ LỖI XÓA MISSION ---
-                async deleteMission(id) {
-                    if (!id) return;
-                    if (!confirm('⚠️ CẢNH BÁO: Bạn có chắc muốn xóa Mission này và toàn bộ dữ liệu bên trong? Hành động này KHÔNG thể phục hồi.')) return;
-                    
-                    try {
-                        this.showToast("Đang xóa dữ liệu...", '<i class="fas fa-spinner fa-spin"></i>', "Đang xử lý");
-                        await deleteDoc(doc(db, "missions", id));
-                        this.showToast("Đã xóa thành công!", '<i class="fas fa-trash-alt"></i>', "Hoàn tất");
-                        this.triggerConfetti(0.5, 'regular');
-                    } catch (error) {
-                        console.error("Lỗi xóa Mission:", error);
-                        alert("❌ Lỗi: Không thể xóa Mission!\n\nChi tiết: " + error.message + "\n\n(Vui lòng kiểm tra tab Rules trên Firebase Console)");
-                    }
-                },
-                // --- END PATCH ---
-
+                async deleteMission(id) { if(confirm('Xóa Mission?')) await deleteDoc(doc(db, "missions", id)); },
                 async editMissionTitle(mission) { const t = prompt("Tên mới:", mission.title); if(t) { mission.title = t; await this.updateMission(mission); } },
                 async editTasklistTitle(mission, tlIndex) { const t = prompt("Tên nhóm mới:", mission.tasklists[tlIndex].title); if(t) { mission.tasklists[tlIndex].title = t; await this.updateMission(mission); } },
                 openQuickAddModal() { if (!this.quickInput.trim()) return; let defaultMissionId = ''; if (this.normalMissions.length > 0) defaultMissionId = this.normalMissions[0].id; this.quickAddForm = { content: this.quickInput, missionId: defaultMissionId, tasklistId: '' }; this.updateTasklistSelection(); this.showQuickAddModal = true; },
@@ -395,27 +322,8 @@
                 async deleteEditingTodo() { if(!confirm("Xóa?")) return; const { mission, tlIndex, tIndex } = this.editingTodo; mission.tasklists[tlIndex].todos.splice(tIndex, 1); await this.updateMission(mission); this.closeEditModal(); },
                 addTasklist(mission, event) { if (!event.target.value.trim()) return; mission.tasklists.push({ id: this.generateId(), title: event.target.value, todos: [] }); this.updateMission(mission); event.target.value = ''; },
                 deleteTasklist(mission, tlIndex) { if(confirm('Xóa danh sách?')) { mission.tasklists.splice(tlIndex, 1); this.updateMission(mission); } },
-                
-                exportData(type) {
-                    this.showMenu = false;
-                    const dataToExport = this.missions.map(m => {
-                        const { id, userId, ...rest } = m;
-                        return rest;
-                    });
-                    const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(dataToExport, null, 2));
-                    const downloadAnchorNode = document.createElement('a');
-                    downloadAnchorNode.setAttribute("href", dataStr);
-                    const date = new Date().toISOString().slice(0,10);
-                    downloadAnchorNode.setAttribute("download", `ZxBiz_Backup_${date}.json`);
-                    document.body.appendChild(downloadAnchorNode);
-                    downloadAnchorNode.click();
-                    downloadAnchorNode.remove();
-                    this.showToast("Đã tải file backup về máy!", '<i class="fas fa-download"></i>', "Sao lưu thành công");
-                }, 
-                
-                async importData(event) {
-                    const file = event.target.files[0]; if (!file) return; const reader = new FileReader(); reader.onload = async (e) => { try { const content = e.target.result; const data = JSON.parse(content); if (!Array.isArray(data)) throw new Error("File JSON không hợp lệ"); this.loading = true; this.showMenu = false; let count = 0; for (const m of data) {
-                        const newMission = { title: m.title || "Untitled", createdAt: Date.now() + count, tasklists: m.tasklists || [] }; await addDoc(collection(db, "missions"), newMission); count++; } this.showToast(`Đã nhập thành công ${count} mục tiêu!`, '<i class="fas fa-file-import"></i>', "Import thành công"); } catch (err) { console.error(err); alert("Lỗi khi đọc file: " + err.message); } finally { this.loading = false; } }; reader.readAsText(file); event.target.value = ''; },
+                exportData(type) { alert("Sẵn sàng!"); this.showMenu = false; }, 
+                async importData(event) { const file = event.target.files[0]; if (!file) return; const reader = new FileReader(); reader.onload = async (e) => { try { const content = e.target.result; const data = JSON.parse(content); if (!Array.isArray(data)) throw new Error("File JSON không hợp lệ"); this.loading = true; this.showMenu = false; let count = 0; for (const m of data) { const newMission = { title: m.title || "Untitled", createdAt: Date.now() + count, tasklists: m.tasklists || [] }; await addDoc(collection(db, "missions"), newMission); count++; } this.showToast(`Đã nhập thành công ${count} mục tiêu!`, '<i class="fas fa-file-import"></i>', "Import thành công"); } catch (err) { console.error(err); alert("Lỗi khi đọc file: " + err.message); } finally { this.loading = false; } }; reader.readAsText(file); event.target.value = ''; },
                 filteredTodos(todos) { if (this.filterStatus === 'all') return todos; if (this.filterStatus === 'money') return todos.filter(t => t.money !== 0); if (this.filterStatus === 'loop') return todos.filter(t => t.isLoop); return todos.filter(t => t.status === this.filterStatus); }
             }
         }).mount('#app');
