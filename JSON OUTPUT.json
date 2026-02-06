@@ -1,0 +1,63 @@
+[
+  {
+    "title": "[Tên Dự Án] - Master Plan",
+    "createdAt": 1738400000000,
+    "tasklists": [
+      {
+        "id": "tl_biz_01",
+        "title": "1. Business & R&D",
+        "todos": [
+          {
+            "id": "td_biz_1",
+            "content": "Phân tích USP sản phẩm",
+            "status": "doing",
+            "money": 0,
+            "note": "[Gửi Gem Product Owner]: Dựa trên Product Passport, hãy phân tích 3 điểm mạnh nhất của sản phẩm này so với đối thủ trên thị trường.",
+            "startTime": "YYYY-MM-DD",
+            "isLoop": false
+          }
+        ]
+      },
+      {
+        "id": "tl_mkt_01",
+        "title": "2. Sale & Marketing",
+        "todos": [
+          {
+            "id": "td_mkt_1",
+            "content": "Viết bài ra mắt trên Facebook",
+            "status": "doing",
+            "money": 0,
+            "note": "[Gửi Gem Content Lead]: Viết một bài đăng Facebook giọng hài hước, tech-savvy. Nhấn mạnh vào tính năng [Tính năng A] giúp giải quyết [Nỗi đau B].",
+            "startTime": "YYYY-MM-DD",
+            "isLoop": false
+          }
+        ]
+      },
+      {
+        "id": "tl_fin_01",
+        "title": "3. Finance",
+        "todos": []
+      },
+      {
+        "id": "tl_hr_01",
+        "title": "4. HR",
+        "todos": []
+      },
+      {
+        "id": "tl_ops_01",
+        "title": "5. Operation & Tech",
+        "todos": [
+          {
+            "id": "td_tech_1",
+            "content": "Cập nhật tính năng Context",
+            "status": "doing",
+            "money": 0,
+            "note": "[Gửi Gem Dev Pro]: Viết code Vue.js để thêm trường 'aiContext' vào Firestore mission data.",
+            "startTime": "YYYY-MM-DD",
+            "isLoop": false
+          }
+        ]
+      }
+    ]
+  }
+]
